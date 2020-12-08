@@ -10,4 +10,4 @@ def landing_page():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(extra_files=['static/canvas.js', 'static/shader.js'])
