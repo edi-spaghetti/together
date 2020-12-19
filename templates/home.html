@@ -1,37 +1,42 @@
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  </head>
-  <body>
-    <main>
-      <div class="jumbotron text-center">
+</head>
+<body>
+<main>
+    <div class="jumbotron text-center">
         <h1>Together</h1>
         <p>Because we're in this together!</p>
-      </div>
+    </div>
 
-      <div class="container">
+    <div class="container">
         <div class="row">
-          <div class="col-sm-10">
-            <img class="img-fluid" src="/static/images/landing_placeholder.png">
-          </div>
-          <div class="col-sm-2">
-            <h3>Hey There</h3>
-            <button type="button" id="login_btn" class="float-left submit-button">Login</button>
-            <button type="button" onclick="">Register</button>
-          </div>
+            <div class="col-sm-10">
+                <img class="img-fluid"
+                     src="/static/images/landing_placeholder.png">
+            </div>
+            <div class="col-sm-2">
+                <h3>Hey There</h3>
+                <button type="button" id="login_btn"
+                        class="float-left submit-button">Login
+                </button>
+                <button type="button" onclick="">Register</button>
+            </div>
         </div>
-      </div>
+    </div>
 
-    </main>
-    <script type="text/javascript">
+</main>
+<script type="text/javascript">
       document.getElementById("login_btn").onclick = function() {
         location.href = "/sign_in.html"
       }
-    </script>
-  </body>
+
+</script>
+</body>
 </html>
