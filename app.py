@@ -1,13 +1,16 @@
+import uuid
+import datetime
 import hashlib
 
-from flask import Flask, request
+from flask import Flask, request, make_response, jsonify
 from flask import render_template
 
 # dummy db for users
 db = {
     'admin@admin.com': {
         'hashed_password': hashlib.md5(b'admin').hexdigest(),
-        'session_token': None
+        'token': None,
+        'valid_until': None
     }
 }
 
@@ -27,11 +30,12 @@ def create_app():
 
     @_app.route('/api/sign_in', methods=['POST'])
     def sign_in():
-        email = str(request.form.get('email'))
-        password = str(request.form.get('password')).encode('utf-8')
 
-        # print(f'testing {email} and {password}')
-        # print(f'GOT: {request.form}')
+        req = request.get_json()
+        email = str(req.get('email'))
+        password = str(req.get('password')).encode('utf-8')
+
+        print(f'testing {email} and {password}')
 
         hp = hashlib.md5()
         hp.update(password)
@@ -41,9 +45,27 @@ def create_app():
             assert db[email]['hashed_password'] == hashed_password
         except (KeyError, AssertionError):
             print('Authentication failed')
-            return render_template('sign_in.html', failure=True, email=email)
+            res = make_response(jsonify({
+                'token': None,
+                'message': 'Incorrect email or password',
+            }), 200)
+            return res
 
         print('Authentication passed')
+        session_token = uuid.uuid4().hex
+        valid_until = datetime.datetime.utcnow()
+        db[email]['token'] = session_token
+        db[email]['valid_until'] = valid_until
+
+        res = make_response(jsonify({
+            'token': session_token,
+            'message': 'OK',
+        }), 200)
+        return res
+
+    @_app.route("/load_game", methods=['GET'])
+    def load_game():
+        print('loading game')
         return render_template('load_game.html')
 
     return _app

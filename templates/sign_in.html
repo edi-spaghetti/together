@@ -18,13 +18,10 @@
 </head>
 
 <body class="text-center">
-    <form class="form-signin">
+    <div class="form-signin">
         <img class="mb-4" src="/static/images/login_icon_placeholder.png" alt=""
              width="72" height="72">
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        {% if failure %}
-            <h3>Incorrect email or password</h3>
-        {% endif %}
+        <h1 class="h3 mb-3 font-weight-normal" id="login-msg">Please sign in</h1>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="email" name="email" id="inputEmail" class="form-control"
                placeholder="Email address" required autofocus>
@@ -38,10 +35,55 @@
         <!--        </label>-->
         <!--      </div>-->
         <button class="btn btn-lg btn-primary btn-block" id="submit_btn"
-                type="submit">Sign in
+                onclick="submit_sign_in()">Sign in
         </button>
         <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
-    </form>
+    </div>
 </body>
+
+<script type="application/javascript">
+    function submit_sign_in() {
+        var email = document.getElementById("inputEmail").value;
+        var password = document.getElementById("inputPassword").value;
+
+        var params = {email: email, password: password};
+
+        fetch(`${window.origin}/api/sign_in`, {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify(params),
+            cache: "no-cache",
+            headers: new Headers({
+              "content-type": "application/json"
+            })
+          })
+          .then(function(response) {
+            if (response.status !== 200) {
+              console.log(`Error: ${response.status}`);
+              return;
+            }
+            response.json().then(function(data) {
+              if (data.token) { auth_passed(data); }
+              else { auth_failed(data); }
+            });
+          })
+          .catch(function(error) {
+            console.log("Fetch error: " + error);
+        });
+
+    }
+
+    function auth_passed(data) {
+        console.log("passed");
+        var newURL = `${window.origin}/load_game?token=${data.token}`
+        console.log(newURL);
+        location.href = newURL;
+    };
+    function auth_failed(data) {
+        console.log("failed");
+        var f = document.getElementById("login-msg");
+        f.innerHTML = data.message
+    };
+</script>
 
 </html>
