@@ -1,13 +1,18 @@
 from flask import Flask
 from flask import render_template
 
-app = Flask(__name__)
 
+def create_app():
+    _app = Flask(__name__)
 
-@app.route('/')
-def landing_page():
-    return render_template('home.html')
+    @_app.route('/')
+    def landing_page():
+        print('Rendering page')
+        return render_template('home.html')
+
+    return _app
 
 
 if __name__ == '__main__':
-    app.run(extra_files=['static/canvas.js', 'static/shader.js'])
+    app = create_app()
+    app.run(extra_files=['static/sketch.js'])
