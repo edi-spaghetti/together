@@ -10,7 +10,7 @@ db = {
     'admin@admin.com': {
         'hashed_password': hashlib.md5(b'admin').hexdigest(),
         'token': None,
-        'valid_until': None
+        'auth_at': None
     }
 }
 
@@ -53,9 +53,9 @@ def create_app():
 
         print('Authentication passed')
         session_token = uuid.uuid4().hex
-        valid_until = datetime.datetime.utcnow()
+        utc_now = datetime.datetime.utcnow()
         db[email]['token'] = session_token
-        db[email]['valid_until'] = valid_until
+        db[email]['auth_at'] = utc_now
 
         res = make_response(jsonify({
             'token': session_token,
