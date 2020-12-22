@@ -22,9 +22,15 @@
                      src="/static/images/landing_placeholder.png">
             </div>
             <div class="col-sm-2">
-                <h3>Hey There</h3>
-                <button type="button" id="login_btn"
+                <h3>Hey {% if current_user %}{{current_user}}{% else %}There{% endif %}</h3>
+                {% if current_user %}
+                <button type="button" id="logout_btn" onclick="sign_out()"
+                        class="float-left submit-button">Logout
+                </button>
+                {% else %}
+                <button type="button" id="login_btn" onclick="to_sign_in()"
                         class="float-left submit-button">Login
+                {% endif %}
                 </button>
                 <button type="button" onclick="">Register</button>
             </div>
@@ -33,9 +39,18 @@
 
 </main>
 <script type="text/javascript">
-      document.getElementById("login_btn").onclick = function() {
+
+    function to_sign_in() {
         location.href = "/sign_in.html"
-      }
+    }
+
+    function to_register() {
+        location.href = "/register.html"
+    }
+
+    function sign_out() {
+        console.log('sign out');
+    }
 
 </script>
 </body>

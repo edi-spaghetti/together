@@ -75,7 +75,7 @@
 
     function auth_passed(data) {
         console.log("passed");
-        var newURL = `${window.origin}/load_game?token=${data.token}`
+        var newURL = `${window.origin}/enter_lobby?token=${data.token}`
         console.log(newURL);
         location.href = newURL;
     };
