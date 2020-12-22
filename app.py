@@ -98,6 +98,10 @@ def create_app():
         print('loading game lobby')
         return render_template('lobby.html')
 
+    @_app.route("/game")
+    def play_game():
+        return render_template('game.html')
+
     @socketio.event
     def entered_lobby(data):
         print('got event data ' + str(data))
@@ -107,10 +111,12 @@ def create_app():
 
 
 if __name__ == '__main__':
-    try:
-        socketio, app, login_manager = create_app()
-        login_manager.init_app(app)
-        print('Running on http://localhost:5001/ - (Press CTRL+C to quit)')
-        socketio.run(app, host='0.0.0.0', port=5001)
-    except KeyboardInterrupt:
-        print('Quitting')
+
+    socketio, app, login_manager = create_app()
+    login_manager.init_app(app)
+    print(
+        "Running. "
+        "Game at http://localhost:5001/game"
+        " - (CTRL+C to quit - but it's super slow)"
+    )
+    socketio.run(app, host='0.0.0.0', port=5001)
