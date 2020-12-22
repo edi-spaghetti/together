@@ -1,10 +1,17 @@
 let o;
+let socket = io();
+socket.on('connect', function() {
+    socket.emit('start_game', {data: 'I\'m connected!'});
+});
+
+let CWIDTH = 800;
+let CHEIGHT = 500;
 
 function setup() {
-    createCanvas(800, 500);
+    createCanvas(CWIDTH, CHEIGHT);
 
-    var x = Math.floor(Math.random() * 800);
-    var y = Math.floor(Math.random() * 500);
+    var x = Math.random();
+    var y = Math.random();
     console.log(x, y);
 
     o = new Mover(x, y, 20);
@@ -20,8 +27,13 @@ class Mover {
 
     constructor(x, y, s) {
         this.x = x;
+        this.cx = Math.floor(x * CWIDTH);
         this.y = y;
+        this.cy = Math.floor(y * CHEIGHT);
         this.size = s;
+        socket.emit(
+            'add_thrall', {x: this.x, y: this.y, size: this.size}
+        )
         console.log('initialised with', x, y, s);
     }
 
@@ -41,25 +53,25 @@ class Mover {
         //Key: w
 
         if (keyIsDown(65)) {
-            this.x -= 1;
-            console.log('left');
+            this.cx -= 1;
+//            console.log('left');
         }
         if (keyIsDown(83)) {
-            this.y += 1;
-            console.log('down');
+            this.cy += 1;
+//            console.log('down');
         }
         if (keyIsDown(68)) {
-            this.x += 1;
-            console.log('right');
+            this.cx += 1;
+//            console.log('right');
         }
         if (keyIsDown(87)) {
-            this.y -= 1;
-            console.log('up');
+            this.cy -= 1;
+//            console.log('up');
         }
     }
 
     draw() {
         fill(255);
-        ellipse(this.x, this.y, this.size, this.size);
+        ellipse(this.cx, this.cy, this.size, this.size);
     }
 }
